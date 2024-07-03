@@ -48,13 +48,14 @@ namespace RecordManagement.Application.Employee.Commands.UploadEmployee
                 
             }))
             {
+              
                 csv.Read();
                 csv.ReadHeader();
                 var records = new List<Employees>();
 
                 while (csv.Read())
                 {
-
+                   
                     var employees = Employees.Create(
                         PersonalInformation.Create(
                        csv.GetField("FirstName"),
@@ -91,7 +92,7 @@ namespace RecordManagement.Application.Employee.Commands.UploadEmployee
                         DateTime.Parse(csv.GetField("EndDate")));
 
                     var skills = Skills.Create(
-                        csv.GetField("Skills"),
+                        csv.GetField("Skill"),
                         csv.GetField("Language")
                         );
                     var references = References.Create(

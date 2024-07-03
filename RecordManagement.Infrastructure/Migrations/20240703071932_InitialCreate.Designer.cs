@@ -11,7 +11,7 @@ using RecordManagement.Infrastructure.Common.Persistence;
 namespace RecordManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(EmployeeDbContext))]
-    [Migration("20240703051944_InitialCreate")]
+    [Migration("20240703071932_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
