@@ -1,0 +1,86 @@
+
+@host = http://localhost:5219/
+@employeeId =ec56e05a-fe11-4c69-814f-724b1e815daa
+DELETE http://localhost:5219/Auth/{{employeeId}}
+#####
+
+GET http://localhost:5219/Auth/GetAllEmployees/{{employeeId}}
+
+
+
+
+#### Personal info and Contact info
+
+POST http://localhost:5219/Auth/AddEmployee/
+Content-Type: application/json
+
+{
+  
+  "PersonalInformation": {
+    "FirstName": "j",
+    "MiddleName": "John Doe",
+    "LastName": "John Doe",
+    "DateOfBirth": "1990-05-15",
+    "PlaceOfBirth": "New York",
+    "Gender": "Male",
+    "CivilStatus": "Single",
+    "Citizenship": "American",
+    "Height": 180,
+    "Weight": 75,
+    "BloodType": "O+"
+  },
+  "ContactInformation": {
+    "PhoneNumber": "123-456-7890",
+    "MobileNumber": "987-654-3210",
+    "EmailAddress": "john.doe@example.com",
+    "PermanentAddress": "123 Main St, Anytown",
+    "PresentAddress": "456 Elm St, Anytown"
+  }
+}
+##### Educational Background
+
+POST {{host}}Auth/AddEducationalBackground/{{employeeId}}
+Content-Type: application/json
+
+{
+    "Degree" : "Computer Science", 
+     "School" : "Earist",
+    "YearGraduated" : "2013"
+}
+
+##### Employment Histroy
+
+
+POST {{host}}Auth/AddEmploymentHistory/{{employeeId}}
+Content-Type: application/json
+
+{
+  
+    "Employer": "Tech Company",
+    "Position": "Software Engineer",
+    "StartDate": "2012-06-01",
+    "EndDate": "2014-08-31"
+}
+
+
+##### skills 
+
+POST {{host}}Auth/AddSkills/{{employeeId}}
+Content-Type: application/json
+
+{
+   
+  "Skill": "Programming",
+  "Language": "Java"
+
+}
+
+#### reference 
+
+POST {{host}}Auth/AddReference/{{employeeId}}
+Content-Type: application/json
+
+{
+  "Name": "John Smith",
+  "ContactInformation": "+1 (555) 123-4567" 
+}
