@@ -1,11 +1,7 @@
     using MediatR;
     using Microsoft.AspNetCore.Mvc;
     using RecordManagement.Application.Common.Interfaces;
-
     using RecordManagement.Application.Employee.Commands.CreateEmployee;
-
-    using ApplicationRequest = RecordManagement.Application.DTOs.CreateEmployeeRequest;
-
     using RecordManagement.Application.Employee.Commands.EducationalBackground;
     using RecordManagement.Application.Employee.Commands.SkillsAndQualification;
     using RecordManagement.Application.Employee.Commands.Reference;
@@ -13,7 +9,7 @@
     using RecordManagement.Contracts.EmployeeRequest;
     using MapsterMapper;
     using RecordManagement.Contracts.EmployeeRequests;
-using RecordManagement.Application.Employee.Commands.UploadEmployee;
+    using RecordManagement.Application.Employee.Commands.UploadEmployee;
 
 
 
@@ -48,7 +44,7 @@ namespace RecordManagement.Api.Controllers
 
                         var result = await _mediator.Send(command);
 
-                        return Ok(result);
+                        return Ok(StatusCode(200, "uploaded succesfully"));
                        
                     }
 
@@ -65,7 +61,7 @@ namespace RecordManagement.Api.Controllers
                     var command = _mapper.Map<CreateEmployeeCommand>((uniqueId, request));
                     var mployee = await _mediator.Send(command);
 
-                    return Ok(mployee);
+                    return Ok(StatusCode(200, "uploaded succesfully"));
                 }
                 catch (Exception ex)
                 {
@@ -77,7 +73,7 @@ namespace RecordManagement.Api.Controllers
             public async Task<IActionResult> CreateEducationalBackground(Guid employeeId, AddEducationalBackgroundRequest request)
             {
 
-                //   var command = new AddEducationalBackgroundCommand(employeeId,request);
+               
                 var command = _mapper.Map<AddEducationalBackgroundCommand>((employeeId, request));
                 var educationalBackground = await _mediator.Send(command);
                 return Ok(educationalBackground);
@@ -88,7 +84,6 @@ namespace RecordManagement.Api.Controllers
             public async Task<IActionResult> CreateEmploymentHistory(Guid employeeId, AddEmploymentHistoryRequest request)
             {
 
-                //  var command = new AddEmployementHistoryCommand(employeeId, request);
 
                 var command = _mapper.Map<AddEmployementHistoryCommand>((employeeId,request));
                 var educationalBackground = await _mediator.Send(command);
@@ -117,7 +112,7 @@ namespace RecordManagement.Api.Controllers
             {
                 try
                 {
-                    // var command = new AddReferenceCommand(employeeId, request);
+                  
                     var command = _mapper.Map<AddReferenceCommand>((employeeId , request));
                     var reference = await _mediator.Send(command);
                     return Ok(reference);

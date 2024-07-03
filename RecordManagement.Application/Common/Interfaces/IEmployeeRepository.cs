@@ -12,7 +12,7 @@ namespace RecordManagement.Application.Common.Interfaces
         void Add(Employees employee);
         Task DeleteEmployee(Guid employeeId);
         Task<IEnumerable<Employees?>> EmployeeListAsync(Guid employeeId);
-        void AddEmployees(List<Employees> employee);
+        void AddEmployeesAsync(List<Employees> employee);
 
 
 

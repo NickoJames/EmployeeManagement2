@@ -9,6 +9,7 @@ GET http://localhost:5219/Auth/GetAllEmployees/{{employeeId}}
 
 
 
+
 #### Personal info and Contact info
 
 POST http://localhost:5219/Auth/AddEmployee/

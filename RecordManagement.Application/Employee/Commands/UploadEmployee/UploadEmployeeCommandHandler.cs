@@ -26,90 +26,83 @@ namespace RecordManagement.Application.Employee.Commands.UploadEmployee
 
         public async Task<List<Employees>> Handle(UploadEmployeeCommand request, CancellationToken cancellationToken)
         {
-            using (var stream = new MemoryStream())
-            {
-                await request.File.CopyToAsync(stream, cancellationToken);
-                stream.Position = 0;
-                
-                var employees = ReadCsvFile(stream);
-                 _employeeRepository1.AddEmployees(employees);
-                return employees;
-            }
+            using var stream = new MemoryStream();
+            await request.File.CopyToAsync(stream, cancellationToken);
+            stream.Position = 0;
+
+            var employees = ReadCsvFile(stream);
+
+            _employeeRepository1.AddEmployeesAsync(employees);
+            return employees;
         }
-
-
-        private List<Employees> ReadCsvFile(Stream stream)
+        private static List<Employees> ReadCsvFile(Stream stream)
         {
-            using (var reader = new StreamReader(stream))
+            using var reader = new StreamReader(stream);
 
-            using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
+            using var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
+            { });
+
+           csv.Read();
+            csv.ReadHeader();
+            var records = new List<Employees>();
+
+            while (csv.Read())
             {
 
-                
-            }))
-            {
-                csv.Read();
-                csv.ReadHeader();
-                var records = new List<Employees>();
-
-                while (csv.Read())
-                {
-
-                    var employees = Employees.Create(
-                        PersonalInformation.Create(
-                       csv.GetField("FirstName"),
-                       csv.GetField("MiddleName"),
-                       csv.GetField("LastName"),
-                       DateTime.Parse(csv.GetField("DateOfBirth")),
-                       csv.GetField("PlaceOfBirth"),
-                       csv.GetField("Gender"),
-                       csv.GetField("CivilStatus"),
-                       csv.GetField("Citizenship"),
-                       int.Parse(csv.GetField("Height")),
-                       int.Parse(csv.GetField("Weight")),
-                       csv.GetField("BloodType")
-                            ),
-                        ContactInformation.create(
-                        csv.GetField("PhoneNumber"),
-                        csv.GetField("MobileNumber"),
-                        csv.GetField("EmailAddress"),
-                        csv.GetField("PermanentAddress"),
-                        csv.GetField("PresentAddress"))
-                        );
+                var employees = Employees.Create(
+                    PersonalInformation.Create(
+                   csv.GetField("FirstName"),
+                   csv.GetField("MiddleName"),
+                   csv.GetField("LastName"),
+                   DateTime.Parse(csv.GetField("DateOfBirth")),
+                   csv.GetField("PlaceOfBirth"),
+                   csv.GetField("Gender"),
+                   csv.GetField("CivilStatus"),
+                   csv.GetField("Citizenship"),
+                   int.Parse(csv.GetField("Height")),
+                   int.Parse(csv.GetField("Weight")),
+                   csv.GetField("BloodType")
+                        ),
+                    ContactInformation.create(
+                    csv.GetField("PhoneNumber"),
+                    csv.GetField("MobileNumber"),
+                    csv.GetField("EmailAddress"),
+                    csv.GetField("PermanentAddress"),
+                    csv.GetField("PresentAddress"))
+                    );
 
 
-                    var educationalBackground = EducationalBackgrounds.Create(
-                        csv.GetField("Degree"),
-                        csv.GetField("School"),
-                       int.Parse (csv.GetField("YearGraduated"))
-                      
-                        );
-                    var employmentHistory = Employmenthistories.Create(
-                        csv.GetField("Employer"),
-                        csv.GetField("Position"),
-                        DateTime.Parse(csv.GetField("StartDate")),
-                        DateTime.Parse(csv.GetField("EndDate")));
+                var educationalBackground = EducationalBackgrounds.Create(
+                    csv.GetField("Degree"),
+                    csv.GetField("School"),
+                   int.Parse(csv.GetField("YearGraduated"))
 
-                    var skills = Skills.Create(
-                        csv.GetField("Skills"),
-                        csv.GetField("Language")
-                        );
-                    var references = References.Create(
-                        csv.GetField("Name"),
-                        csv.GetField("ContactInformation"));
+                    );
+                var employmentHistory = Employmenthistories.Create(
+                    csv.GetField("Employer"),
+                    csv.GetField("Position"),
+                    DateTime.Parse(csv.GetField("StartDate")),
+                    DateTime.Parse(csv.GetField("EndDate")));
+
+                var skills = Skills.Create(
+                    csv.GetField("Skill"),
+                    csv.GetField("Language")
+                    );
+                var references = References.Create(
+                    csv.GetField("Name"),
+                    csv.GetField("ContactInformation"));
 
 
-                    employees.AddEducationalBackground(educationalBackground);
-                    employees.AddEmploymentHistories(employmentHistory);
-                    employees.AddSkills(skills);
-                    employees.AddReferences(references);
-                    
+                employees.AddEducationalBackground(educationalBackground);
+                employees.AddEmploymentHistories(employmentHistory);
+                employees.AddSkills(skills);
+                employees.AddReferences(references);
 
-                    records.Add(employees);
-                }
 
-                return records;
+                records.Add(employees);
             }
+
+            return records;
         }
 
 

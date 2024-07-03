@@ -20,7 +20,7 @@ namespace RecordManagement.Infrastructure.Employees.Persistence
             _dbContext.SaveChanges();
         }
 
-        public void AddEmployees(List<Employee> employee)
+        public void AddEmployeesAsync(List<Employee> employee)
         {
             _dbContext.Employees.AddRange(employee);
             _dbContext.SaveChanges();
