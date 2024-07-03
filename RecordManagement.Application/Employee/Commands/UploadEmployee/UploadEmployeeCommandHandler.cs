@@ -9,6 +9,9 @@ using System.Net.Mail;
 using System.Reflection;
 using Employees = RecordManagement.Domain.Employees.Employee;
 using EducationalBackgrounds = RecordManagement.Domain.Educationalbackgrounds.EducationalBackground;
+using Employmenthistories = RecordManagement.Domain.EmploymentHistories.EmploymentHistory;
+using Skills = RecordManagement.Domain.SkillsAndQualifications.SkillsAndQualification;
+using References = RecordManagement.Domain.References.Reference;
 
 namespace RecordManagement.Application.Employee.Commands.UploadEmployee
 {
@@ -81,11 +84,27 @@ namespace RecordManagement.Application.Employee.Commands.UploadEmployee
                        int.Parse (csv.GetField("YearGraduated"))
                       
                         );
+                    var employmentHistory = Employmenthistories.Create(
+                        csv.GetField("Employer"),
+                        csv.GetField("Position"),
+                        DateTime.Parse(csv.GetField("StartDate")),
+                        DateTime.Parse(csv.GetField("EndDate")));
 
-                  
-                 
+                    var skills = Skills.Create(
+                        csv.GetField("Skills"),
+                        csv.GetField("Language")
+                        );
+                    var references = References.Create(
+                        csv.GetField("Name"),
+                        csv.GetField("ContactInformation"));
 
-                
+
+                    employees.AddEducationalBackground(educationalBackground);
+                    employees.AddEmploymentHistories(employmentHistory);
+                    employees.AddSkills(skills);
+                    employees.AddReferences(references);
+                    
+
                     records.Add(employees);
                 }
 
